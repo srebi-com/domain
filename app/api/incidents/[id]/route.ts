@@ -7,7 +7,7 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const incident = getIncidentById(params.id);
+  const incident = await getIncidentById(params.id);
   if (!incident) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
@@ -19,6 +19,7 @@ export async function GET(
     company: incident.company,
     system: incident.system,
     notes: incident.notes,
-    files: incident.files
+    files: incident.files,
+    report: incident.report
   });
 }

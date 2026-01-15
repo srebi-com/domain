@@ -85,6 +85,13 @@ export const dictionary: Record<Locale, {
       maxSizeHint: string;
       progress: string;
     };
+    report: {
+      title: string;
+      ready: string;
+      notReady: string;
+      download: string;
+      error: string;
+    };
     status: {
       title: string;
       subtitle: string;
@@ -97,6 +104,23 @@ export const dictionary: Record<Locale, {
       roleVideo: string;
       roleLogs: string;
     };
+  };
+  admin: {
+    title: string;
+    subtitle: string;
+    summaryTitle: string;
+    filesTitle: string;
+    noFiles: string;
+    reportReady: string;
+    reportMissing: string;
+    uploadTitle: string;
+    uploadDescription: string;
+    uploadLabel: string;
+    upload: string;
+    uploading: string;
+    success: string;
+    error: string;
+    viewIncident: string;
   };
   footer: {
     contact: string;
@@ -227,36 +251,60 @@ export const dictionary: Record<Locale, {
         submit: "Create incident",
         success: "Incident created. Upload files below."
       },
-      uploader: {
-        title: "Upload files",
-        description: "Upload a video and/or logs. Files are sent directly to secure storage.",
-        videoLabel: "Incident video (MP4)",
-        logsLabel: "Logs archive (ZIP/JSON/LOG)",
-        optional: "Optional",
-        chooseFile: "Choose file",
-        upload: "Upload",
-        uploading: "Uploading...",
-        uploaded: "Uploaded",
-        retry: "Retry",
-        invalidType: "Unsupported file type.",
-        tooLarge: "File exceeds 1GB limit.",
-        genericError: "Upload failed. Please retry.",
-        maxSizeHint: "Max 1GB each. Direct upload to secure storage.",
-        progress: "Progress"
-      },
-      status: {
-        title: "Incident status",
-        subtitle: "Share this page with teammates or return later to view uploaded files.",
-        fieldsTitle: "Incident details",
-        filesTitle: "Uploaded files",
-        empty: "No files uploaded yet.",
-        back: "Back to submission",
-        view: "View incident status",
-        uploadedAt: "Uploaded",
-        roleVideo: "Video",
-        roleLogs: "Logs"
-      }
+    uploader: {
+      title: "Upload files",
+      description: "Upload a video and/or logs. Files are sent directly to secure storage.",
+      videoLabel: "Incident video (MP4)",
+      logsLabel: "Logs archive (ZIP/JSON/LOG)",
+      optional: "Optional",
+      chooseFile: "Choose file",
+      upload: "Upload",
+      uploading: "Uploading...",
+      uploaded: "Uploaded",
+      retry: "Retry",
+      invalidType: "Unsupported file type.",
+      tooLarge: "File exceeds 1GB limit.",
+      genericError: "Upload failed. Please retry.",
+      maxSizeHint: "Max 1GB each. Direct upload to secure storage.",
+      progress: "Progress"
     },
+    report: {
+      title: "Insurer-style report",
+      ready: "Report ready for download.",
+      notReady: "Report not available yet. Please check back soon.",
+      download: "Download PDF",
+      error: "Could not generate a download link. Try again."
+    },
+    status: {
+      title: "Incident status",
+      subtitle: "Share this page with teammates or return later to view uploaded files.",
+      fieldsTitle: "Incident details",
+      filesTitle: "Uploaded files",
+      empty: "No files uploaded yet.",
+      back: "Back to submission",
+      view: "View incident status",
+      uploadedAt: "Uploaded",
+      roleVideo: "Video",
+      roleLogs: "Logs"
+    }
+  },
+  admin: {
+    title: "Admin report delivery",
+    subtitle: "Upload the insurer-style PDF report for this incident.",
+    summaryTitle: "Incident summary",
+    filesTitle: "Uploaded evidence",
+    noFiles: "No files uploaded yet.",
+    reportReady: "Report already uploaded.",
+    reportMissing: "Report not uploaded yet.",
+    uploadTitle: "Upload PDF report",
+    uploadDescription: "PDFs only. Stored privately in R2.",
+    uploadLabel: "Report PDF",
+    upload: "Upload report",
+    uploading: "Uploading...",
+    success: "Report uploaded.",
+    error: "Upload failed. Please retry.",
+    viewIncident: "View incident page"
+  },
     footer: {
       contact: "Contact",
       privacy: "Privacy",
@@ -394,36 +442,60 @@ export const dictionary: Record<Locale, {
         submit: "사고 생성",
         success: "사고가 생성되었습니다. 아래에서 파일을 업로드하세요."
       },
-      uploader: {
-        title: "파일 업로드",
-        description: "영상과 로그를 업로드하세요. 파일은 보안 스토리지로 직접 전송됩니다.",
-        videoLabel: "사고 영상 (MP4)",
-        logsLabel: "로그 파일 (ZIP/JSON/LOG)",
-        optional: "선택",
-        chooseFile: "파일 선택",
-        upload: "업로드",
-        uploading: "업로드 중...",
-        uploaded: "업로드 완료",
-        retry: "재시도",
-        invalidType: "지원하지 않는 파일 형식입니다.",
-        tooLarge: "파일 용량이 1GB를 초과했습니다.",
-        genericError: "업로드에 실패했습니다. 다시 시도해 주세요.",
-        maxSizeHint: "각 파일 최대 1GB. 보안 스토리지로 직접 업로드.",
-        progress: "진행률"
-      },
-      status: {
-        title: "사고 상태",
-        subtitle: "팀과 공유하거나 나중에 돌아와 업로드된 파일을 확인하세요.",
-        fieldsTitle: "사고 정보",
-        filesTitle: "업로드된 파일",
-        empty: "아직 업로드된 파일이 없습니다.",
-        back: "접수로 돌아가기",
-        view: "사고 상태 보기",
-        uploadedAt: "업로드",
-        roleVideo: "영상",
-        roleLogs: "로그"
-      }
+    uploader: {
+      title: "파일 업로드",
+      description: "영상과 로그를 업로드하세요. 파일은 보안 스토리지로 직접 전송됩니다.",
+      videoLabel: "사고 영상 (MP4)",
+      logsLabel: "로그 파일 (ZIP/JSON/LOG)",
+      optional: "선택",
+      chooseFile: "파일 선택",
+      upload: "업로드",
+      uploading: "업로드 중...",
+      uploaded: "업로드 완료",
+      retry: "재시도",
+      invalidType: "지원하지 않는 파일 형식입니다.",
+      tooLarge: "파일 용량이 1GB를 초과했습니다.",
+      genericError: "업로드에 실패했습니다. 다시 시도해 주세요.",
+      maxSizeHint: "각 파일 최대 1GB. 보안 스토리지로 직접 업로드.",
+      progress: "진행률"
     },
+    report: {
+      title: "보험사 스타일 리포트",
+      ready: "리포트가 준비되었습니다.",
+      notReady: "아직 리포트가 준비되지 않았습니다.",
+      download: "PDF 다운로드",
+      error: "다운로드 링크 생성에 실패했습니다. 다시 시도해 주세요."
+    },
+    status: {
+      title: "사고 상태",
+      subtitle: "팀과 공유하거나 나중에 돌아와 업로드된 파일을 확인하세요.",
+      fieldsTitle: "사고 정보",
+      filesTitle: "업로드된 파일",
+      empty: "아직 업로드된 파일이 없습니다.",
+      back: "접수로 돌아가기",
+      view: "사고 상태 보기",
+      uploadedAt: "업로드",
+      roleVideo: "영상",
+      roleLogs: "로그"
+    }
+  },
+  admin: {
+    title: "관리자 리포트 전달",
+    subtitle: "해당 사고의 보험사 스타일 PDF 리포트를 업로드하세요.",
+    summaryTitle: "사고 요약",
+    filesTitle: "업로드된 증빙",
+    noFiles: "아직 업로드된 파일이 없습니다.",
+    reportReady: "리포트가 이미 업로드되었습니다.",
+    reportMissing: "리포트가 아직 업로드되지 않았습니다.",
+    uploadTitle: "PDF 리포트 업로드",
+    uploadDescription: "PDF만 허용됩니다. R2에 비공개로 저장됩니다.",
+    uploadLabel: "리포트 PDF",
+    upload: "리포트 업로드",
+    uploading: "업로드 중...",
+    success: "리포트를 업로드했습니다.",
+    error: "업로드에 실패했습니다. 다시 시도해 주세요.",
+    viewIncident: "사고 페이지 보기"
+  },
     footer: {
       contact: "문의",
       privacy: "개인정보",
@@ -561,36 +633,60 @@ export const dictionary: Record<Locale, {
         submit: "事故を作成",
         success: "事故を作成しました。以下からファイルをアップロードしてください。"
       },
-      uploader: {
-        title: "ファイルアップロード",
-        description: "動画とログをアップロードできます。ファイルは安全なストレージへ直接送信されます。",
-        videoLabel: "事故動画 (MP4)",
-        logsLabel: "ログファイル (ZIP/JSON/LOG)",
-        optional: "任意",
-        chooseFile: "ファイルを選択",
-        upload: "アップロード",
-        uploading: "アップロード中...",
-        uploaded: "アップロード済み",
-        retry: "再試行",
-        invalidType: "対応していないファイル形式です。",
-        tooLarge: "ファイルが1GBを超えています。",
-        genericError: "アップロードに失敗しました。もう一度お試しください。",
-        maxSizeHint: "各ファイル最大1GB。安全なストレージに直接アップロード。",
-        progress: "進行状況"
-      },
-      status: {
-        title: "事故ステータス",
-        subtitle: "チームと共有したり、後でアップロード済みファイルを確認できます。",
-        fieldsTitle: "事故情報",
-        filesTitle: "アップロード済みファイル",
-        empty: "まだファイルがありません。",
-        back: "送信に戻る",
-        view: "事故ステータスを見る",
-        uploadedAt: "アップロード",
-        roleVideo: "動画",
-        roleLogs: "ログ"
-      }
+    uploader: {
+      title: "ファイルアップロード",
+      description: "動画とログをアップロードできます。ファイルは安全なストレージへ直接送信されます。",
+      videoLabel: "事故動画 (MP4)",
+      logsLabel: "ログファイル (ZIP/JSON/LOG)",
+      optional: "任意",
+      chooseFile: "ファイルを選択",
+      upload: "アップロード",
+      uploading: "アップロード中...",
+      uploaded: "アップロード済み",
+      retry: "再試行",
+      invalidType: "対応していないファイル形式です。",
+      tooLarge: "ファイルが1GBを超えています。",
+      genericError: "アップロードに失敗しました。もう一度お試しください。",
+      maxSizeHint: "各ファイル最大1GB。安全なストレージに直接アップロード。",
+      progress: "進行状況"
     },
+    report: {
+      title: "保険会社スタイルのレポート",
+      ready: "レポートの準備ができました。",
+      notReady: "レポートはまだ利用できません。",
+      download: "PDFをダウンロード",
+      error: "ダウンロードリンクの生成に失敗しました。再試行してください。"
+    },
+    status: {
+      title: "事故ステータス",
+      subtitle: "チームと共有したり、後でアップロード済みファイルを確認できます。",
+      fieldsTitle: "事故情報",
+      filesTitle: "アップロード済みファイル",
+      empty: "まだファイルがありません。",
+      back: "送信に戻る",
+      view: "事故ステータスを見る",
+      uploadedAt: "アップロード",
+      roleVideo: "動画",
+      roleLogs: "ログ"
+    }
+  },
+  admin: {
+    title: "管理者レポート配信",
+    subtitle: "この事故の保険会社スタイルPDFレポートをアップロードします。",
+    summaryTitle: "事故サマリー",
+    filesTitle: "アップロード済み証拠",
+    noFiles: "まだファイルがありません。",
+    reportReady: "レポートは既にアップロードされています。",
+    reportMissing: "レポートはまだアップロードされていません。",
+    uploadTitle: "PDFレポートをアップロード",
+    uploadDescription: "PDFのみ。R2に非公開で保存されます。",
+    uploadLabel: "レポートPDF",
+    upload: "レポートをアップロード",
+    uploading: "アップロード中...",
+    success: "レポートをアップロードしました。",
+    error: "アップロードに失敗しました。再試行してください。",
+    viewIncident: "事故ページを見る"
+  },
     footer: {
       contact: "連絡先",
       privacy: "プライバシー",

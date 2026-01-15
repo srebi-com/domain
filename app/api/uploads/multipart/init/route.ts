@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid file size" }, { status: 400 });
   }
 
-  if (!getIncidentById(body.incidentId)) {
+  if (!(await getIncidentById(body.incidentId))) {
     return NextResponse.json({ error: "Incident not found" }, { status: 404 });
   }
 

@@ -1,6 +1,9 @@
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
+import { Readable } from "stream";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { getBucketName, getR2Client, hasR2Config, putObjectBytes } from "./r2";
 
 export type IncidentInput = {
   email?: string;
@@ -18,10 +21,20 @@ export type IncidentFile = {
   uploadedAt: string;
 };
 
+export type IncidentReport = {
+  status: "ready" | "none" | "processing";
+  objectKey: string;
+  fileName: string;
+  size: number;
+  contentType: "application/pdf";
+  uploadedAt: string;
+};
+
 export type IncidentRecord = IncidentInput & {
   id: string;
   createdAt: string;
   files: IncidentFile[];
+  report?: IncidentReport;
 };
 
 type UploadSession = {
@@ -90,9 +103,53 @@ export function createIncident(input: IncidentInput) {
   return record;
 }
 
-export function getIncidentById(id: string) {
+async function readIncidentMeta(incidentId: string) {
+  if (!hasR2Config()) {
+    return null;
+  }
+  const client = getR2Client();
+  const bucket = getBucketName();
+  const key = `incidents/${incidentId}/meta.json`;
+  try {
+    const response = await client.send(
+      new GetObjectCommand({ Bucket: bucket, Key: key })
+    );
+    if (!response.Body) {
+      return null;
+    }
+    const stream = response.Body as Readable;
+    const chunks: Buffer[] = [];
+    for await (const chunk of stream) {
+      chunks.push(Buffer.from(chunk));
+    }
+    const text = Buffer.concat(chunks).toString("utf8");
+    return JSON.parse(text) as { report?: IncidentReport };
+  } catch (error) {
+    return null;
+  }
+}
+
+async function writeIncidentMeta(incidentId: string, data: object) {
+  const key = `incidents/${incidentId}/meta.json`;
+  const payload = Buffer.from(JSON.stringify(data, null, 2));
+  await putObjectBytes({
+    key,
+    bytes: payload,
+    contentType: "application/json"
+  });
+}
+
+export async function getIncidentById(id: string) {
   loadFromDisk();
-  return incidents.get(id) || null;
+  const incident = incidents.get(id) || null;
+  if (!incident) {
+    return null;
+  }
+  const meta = await readIncidentMeta(id);
+  if (meta?.report) {
+    return { ...incident, report: meta.report };
+  }
+  return incident;
 }
 
 export function addFileToIncident(incidentId: string, file: IncidentFile) {
@@ -105,6 +162,37 @@ export function addFileToIncident(incidentId: string, file: IncidentFile) {
   incidents.set(incidentId, incident);
   saveToDisk();
   return incident;
+}
+
+export async function getIncidentReport(incidentId: string) {
+  const meta = await readIncidentMeta(incidentId);
+  return meta?.report || null;
+}
+
+export async function setIncidentReport(
+  incidentId: string,
+  report: IncidentReport
+) {
+  loadFromDisk();
+  const incident = incidents.get(incidentId);
+  const meta = (await readIncidentMeta(incidentId)) || {};
+  const nextMeta = {
+    incidentId,
+    createdAt: incident?.createdAt || new Date().toISOString(),
+    email: incident?.email,
+    company: incident?.company,
+    system: incident?.system,
+    notes: incident?.notes,
+    files: incident?.files || [],
+    ...meta,
+    report
+  };
+  await writeIncidentMeta(incidentId, nextMeta);
+  if (incident) {
+    incident.report = report;
+    incidents.set(incidentId, incident);
+    saveToDisk();
+  }
 }
 
 export function registerUploadSession(session: UploadSession) {

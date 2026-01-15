@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ReportDownloadButton from "../../../../components/ReportDownloadButton";
 import { getIncidentById } from "../../../../lib/store";
 import { getDictionary, locales, type Locale } from "../../../../lib/i18n";
 
@@ -35,7 +36,7 @@ function formatSize(bytes: number) {
   return `${value.toFixed(index === 0 ? 0 : 1)} ${units[index]}`;
 }
 
-export default function IncidentStatusPage({
+export default async function IncidentStatusPage({
   params
 }: {
   params: { locale: string; id: string };
@@ -45,7 +46,7 @@ export default function IncidentStatusPage({
     notFound();
   }
   const dict = getDictionary(locale);
-  const incident = getIncidentById(params.id);
+  const incident = await getIncidentById(params.id);
 
   if (!incident) {
     notFound();
@@ -116,6 +117,29 @@ export default function IncidentStatusPage({
                   ))}
                 </ul>
               )}
+              <div className="mt-6 rounded-xl bg-white p-4">
+                <p className="text-sm font-semibold text-ink-900">
+                  {dict.incident.report.title}
+                </p>
+                {incident.report?.status === "ready" ? (
+                  <div className="mt-3 space-y-2">
+                    <p className="text-xs text-ink-500">
+                      {dict.incident.report.ready}
+                    </p>
+                    <ReportDownloadButton
+                      incidentId={incident.id}
+                      copy={{
+                        download: dict.incident.report.download,
+                        error: dict.incident.report.error
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <p className="mt-3 text-xs text-ink-500">
+                    {dict.incident.report.notReady}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
 
