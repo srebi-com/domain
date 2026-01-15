@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     notes?: string;
   };
 
-  const incident = createIncident({
+  const incident = await createIncident({
     email: body.email?.trim() || undefined,
     company: body.company?.trim() || undefined,
     system: body.system?.trim() || undefined,

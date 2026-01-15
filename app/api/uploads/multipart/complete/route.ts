@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { CompleteMultipartUploadCommand } from "@aws-sdk/client-s3";
-import { addFileToIncident, consumeUploadSession } from "../../../../../lib/store";
+import {
+  appendFileToIncident,
+  deleteUploadSession,
+  readUploadSession
+} from "../../../../../lib/store";
 import { getBucketName, getR2Client } from "../../../../../lib/r2";
 
 export const runtime = "nodejs";
@@ -42,27 +46,24 @@ export async function POST(request: Request) {
 
   await client.send(command);
 
-  const stored = consumeUploadSession(body.uploadId, body.objectKey);
-  const payload = stored || {
-    uploadId: body.uploadId,
-    objectKey: body.objectKey,
-    incidentId: body.incidentId || "",
-    role: body.role || "video",
-    fileName: body.fileName || "file",
-    size: body.size || 0,
-    contentType: body.contentType || "application/octet-stream"
-  };
-
-  if (payload.incidentId) {
-    addFileToIncident(payload.incidentId, {
-      role: payload.role,
-      objectKey: payload.objectKey,
-      fileName: payload.fileName,
-      size: payload.size,
-      contentType: payload.contentType,
-      uploadedAt: new Date().toISOString()
-    });
+  const session = await readUploadSession(body.uploadId);
+  if (!session) {
+    return NextResponse.json(
+      { error: "Upload session not found" },
+      { status: 404 }
+    );
   }
+
+  await appendFileToIncident(session.incidentId, {
+    role: session.role,
+    objectKey: session.objectKey,
+    fileName: session.fileName,
+    size: session.fileSize,
+    contentType: session.contentType,
+    uploadedAt: new Date().toISOString()
+  });
+
+  await deleteUploadSession(body.uploadId);
 
   return NextResponse.json({ ok: true });
 }

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { CreateMultipartUploadCommand } from "@aws-sdk/client-s3";
-import { getIncidentById, registerUploadSession } from "../../../../../lib/store";
+import { ensureIncidentMeta, writeUploadSession } from "../../../../../lib/store";
 import {
   buildObjectKey,
   CHUNK_SIZE,
@@ -32,9 +32,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid file size" }, { status: 400 });
   }
 
-  if (!(await getIncidentById(body.incidentId))) {
-    return NextResponse.json({ error: "Incident not found" }, { status: 404 });
-  }
+  await ensureIncidentMeta(body.incidentId);
 
   if (body.fileSize > MAX_FILE_SIZE) {
     return NextResponse.json({ error: "File too large" }, { status: 400 });
@@ -65,14 +63,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Upload initialization failed" }, { status: 500 });
   }
 
-  registerUploadSession({
-    uploadId: response.UploadId,
-    objectKey,
+  await writeUploadSession(response.UploadId, {
     incidentId: body.incidentId,
+    objectKey,
     role: body.role,
     fileName: body.fileName,
-    size: body.fileSize,
-    contentType: body.contentType
+    fileSize: body.fileSize,
+    contentType: body.contentType,
+    createdAt: new Date().toISOString()
   });
 
   return NextResponse.json({

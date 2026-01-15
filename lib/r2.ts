@@ -1,4 +1,5 @@
 import {
+  DeleteObjectCommand,
   GetObjectCommand,
   PutObjectCommand,
   S3Client
@@ -76,6 +77,29 @@ export async function presignGetObject(key: string, expiresIn = 600) {
   const bucket = getBucketName();
   const command = new GetObjectCommand({ Bucket: bucket, Key: key });
   return getSignedUrl(client, command, { expiresIn });
+}
+
+export async function getObjectText(key: string) {
+  const client = getR2Client();
+  const bucket = getBucketName();
+  const response = await client.send(
+    new GetObjectCommand({ Bucket: bucket, Key: key })
+  );
+  if (!response.Body) {
+    return null;
+  }
+  const body = response.Body as AsyncIterable<Uint8Array>;
+  const chunks: Uint8Array[] = [];
+  for await (const chunk of body) {
+    chunks.push(chunk);
+  }
+  return Buffer.concat(chunks).toString("utf8");
+}
+
+export async function deleteObject(key: string) {
+  const client = getR2Client();
+  const bucket = getBucketName();
+  await client.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
 }
 
 export function buildObjectKey({

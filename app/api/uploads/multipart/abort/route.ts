@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { AbortMultipartUploadCommand } from "@aws-sdk/client-s3";
+import { deleteUploadSession } from "../../../../../lib/store";
 import { getBucketName, getR2Client } from "../../../../../lib/r2";
 
 export const runtime = "nodejs";
@@ -24,6 +25,8 @@ export async function POST(request: Request) {
       UploadId: body.uploadId
     })
   );
+
+  await deleteUploadSession(body.uploadId);
 
   return NextResponse.json({ ok: true });
 }

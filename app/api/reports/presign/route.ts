@@ -18,7 +18,7 @@ export async function GET(request: Request) {
   }
 
   const report = await getIncidentReport(incidentId);
-  if (!report || report.status !== "ready") {
+  if (!report || report.status !== "ready" || !report.objectKey) {
     return NextResponse.json({ error: "Report not ready" }, { status: 404 });
   }
 
