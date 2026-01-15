@@ -54,6 +54,50 @@ export const dictionary: Record<Locale, {
     invalidEmail: string;
     error: string;
   };
+  incident: {
+    cta: string;
+    title: string;
+    subtitle: string;
+    form: {
+      title: string;
+      description: string;
+      email: string;
+      company: string;
+      system: string;
+      notes: string;
+      submit: string;
+      success: string;
+    };
+    uploader: {
+      title: string;
+      description: string;
+      videoLabel: string;
+      logsLabel: string;
+      optional: string;
+      chooseFile: string;
+      upload: string;
+      uploading: string;
+      uploaded: string;
+      retry: string;
+      invalidType: string;
+      tooLarge: string;
+      genericError: string;
+      maxSizeHint: string;
+      progress: string;
+    };
+    status: {
+      title: string;
+      subtitle: string;
+      fieldsTitle: string;
+      filesTitle: string;
+      empty: string;
+      back: string;
+      view: string;
+      uploadedAt: string;
+      roleVideo: string;
+      roleLogs: string;
+    };
+  };
   footer: {
     contact: string;
     privacy: string;
@@ -168,6 +212,50 @@ export const dictionary: Record<Locale, {
       requestDemo: "Request demo",
       invalidEmail: "Please enter a valid email address.",
       error: "We could not submit this yet. Please email hello@srebi.com to join."
+    },
+    incident: {
+      cta: "Submit incident",
+      title: "Incident submission",
+      subtitle: "Create an incident record and upload supporting files. This supports insurer-style reporting, not insurance decisions.",
+      form: {
+        title: "Incident details",
+        description: "Optional context to help structure the report.",
+        email: "Contact email",
+        company: "Company or team",
+        system: "System type",
+        notes: "Notes",
+        submit: "Create incident",
+        success: "Incident created. Upload files below."
+      },
+      uploader: {
+        title: "Upload files",
+        description: "Upload a video and/or logs. Files are sent directly to secure storage.",
+        videoLabel: "Incident video (MP4)",
+        logsLabel: "Logs archive (ZIP/JSON/LOG)",
+        optional: "Optional",
+        chooseFile: "Choose file",
+        upload: "Upload",
+        uploading: "Uploading...",
+        uploaded: "Uploaded",
+        retry: "Retry",
+        invalidType: "Unsupported file type.",
+        tooLarge: "File exceeds 1GB limit.",
+        genericError: "Upload failed. Please retry.",
+        maxSizeHint: "Max 1GB each. Direct upload to secure storage.",
+        progress: "Progress"
+      },
+      status: {
+        title: "Incident status",
+        subtitle: "Share this page with teammates or return later to view uploaded files.",
+        fieldsTitle: "Incident details",
+        filesTitle: "Uploaded files",
+        empty: "No files uploaded yet.",
+        back: "Back to submission",
+        view: "View incident status",
+        uploadedAt: "Uploaded",
+        roleVideo: "Video",
+        roleLogs: "Logs"
+      }
     },
     footer: {
       contact: "Contact",
@@ -292,6 +380,50 @@ export const dictionary: Record<Locale, {
       invalidEmail: "올바른 이메일 주소를 입력해 주세요.",
       error: "지금은 전송할 수 없습니다. hello@srebi.com으로 이메일을 보내 주세요."
     },
+    incident: {
+      cta: "사고 접수",
+      title: "사고 접수",
+      subtitle: "사고 기록을 만들고 파일을 업로드하세요. 보험 판단이 아닌 보험사 스타일 리포트를 위한 절차입니다.",
+      form: {
+        title: "사고 정보",
+        description: "리포트를 구성하는 데 도움이 되는 선택 항목입니다.",
+        email: "연락 이메일",
+        company: "회사/팀",
+        system: "시스템 유형",
+        notes: "메모",
+        submit: "사고 생성",
+        success: "사고가 생성되었습니다. 아래에서 파일을 업로드하세요."
+      },
+      uploader: {
+        title: "파일 업로드",
+        description: "영상과 로그를 업로드하세요. 파일은 보안 스토리지로 직접 전송됩니다.",
+        videoLabel: "사고 영상 (MP4)",
+        logsLabel: "로그 파일 (ZIP/JSON/LOG)",
+        optional: "선택",
+        chooseFile: "파일 선택",
+        upload: "업로드",
+        uploading: "업로드 중...",
+        uploaded: "업로드 완료",
+        retry: "재시도",
+        invalidType: "지원하지 않는 파일 형식입니다.",
+        tooLarge: "파일 용량이 1GB를 초과했습니다.",
+        genericError: "업로드에 실패했습니다. 다시 시도해 주세요.",
+        maxSizeHint: "각 파일 최대 1GB. 보안 스토리지로 직접 업로드.",
+        progress: "진행률"
+      },
+      status: {
+        title: "사고 상태",
+        subtitle: "팀과 공유하거나 나중에 돌아와 업로드된 파일을 확인하세요.",
+        fieldsTitle: "사고 정보",
+        filesTitle: "업로드된 파일",
+        empty: "아직 업로드된 파일이 없습니다.",
+        back: "접수로 돌아가기",
+        view: "사고 상태 보기",
+        uploadedAt: "업로드",
+        roleVideo: "영상",
+        roleLogs: "로그"
+      }
+    },
     footer: {
       contact: "문의",
       privacy: "개인정보",
@@ -414,6 +546,50 @@ export const dictionary: Record<Locale, {
       requestDemo: "デモ依頼",
       invalidEmail: "正しいメールアドレスを入力してください。",
       error: "現在送信できません。hello@srebi.comにご連絡ください。"
+    },
+    incident: {
+      cta: "事故を送信",
+      title: "事故の送信",
+      subtitle: "事故レコードを作成し、ファイルをアップロードします。保険判断ではなく保険会社スタイルのレポート向けです。",
+      form: {
+        title: "事故情報",
+        description: "レポート整理のための任意項目です。",
+        email: "連絡先メール",
+        company: "会社/チーム",
+        system: "システム種別",
+        notes: "メモ",
+        submit: "事故を作成",
+        success: "事故を作成しました。以下からファイルをアップロードしてください。"
+      },
+      uploader: {
+        title: "ファイルアップロード",
+        description: "動画とログをアップロードできます。ファイルは安全なストレージへ直接送信されます。",
+        videoLabel: "事故動画 (MP4)",
+        logsLabel: "ログファイル (ZIP/JSON/LOG)",
+        optional: "任意",
+        chooseFile: "ファイルを選択",
+        upload: "アップロード",
+        uploading: "アップロード中...",
+        uploaded: "アップロード済み",
+        retry: "再試行",
+        invalidType: "対応していないファイル形式です。",
+        tooLarge: "ファイルが1GBを超えています。",
+        genericError: "アップロードに失敗しました。もう一度お試しください。",
+        maxSizeHint: "各ファイル最大1GB。安全なストレージに直接アップロード。",
+        progress: "進行状況"
+      },
+      status: {
+        title: "事故ステータス",
+        subtitle: "チームと共有したり、後でアップロード済みファイルを確認できます。",
+        fieldsTitle: "事故情報",
+        filesTitle: "アップロード済みファイル",
+        empty: "まだファイルがありません。",
+        back: "送信に戻る",
+        view: "事故ステータスを見る",
+        uploadedAt: "アップロード",
+        roleVideo: "動画",
+        roleLogs: "ログ"
+      }
     },
     footer: {
       contact: "連絡先",

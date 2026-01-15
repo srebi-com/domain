@@ -79,6 +79,12 @@ export default function Home({ params }: { params: { locale: string } }) {
                 >
                   {dict.hero.primaryCta}
                 </Link>
+                <Link
+                  href={`/${locale}/incident/new`}
+                  className="inline-flex items-center justify-center rounded-full border border-neon-400 px-6 py-3 text-sm font-semibold text-ink-900 transition hover:border-neon-500 hover:text-ink-900"
+                >
+                  {dict.incident.cta}
+                </Link>
                 <a
                   href="mailto:hello@srebi.com?subject=Srebi%20Demo%20Request"
                   className="inline-flex items-center justify-center rounded-full border border-mist-200 px-6 py-3 text-sm font-semibold text-ink-700 transition hover:border-ink-900 hover:text-ink-900"
